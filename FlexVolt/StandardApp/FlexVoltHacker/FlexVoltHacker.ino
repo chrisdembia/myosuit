@@ -47,11 +47,11 @@ long measurementdelay = 1000000/long(UserFrequency);// converted to microseconds
 
 
 // Control Flags
-boolean sendflag = false;
-boolean dataflag = false;
+boolean sendflag = true;
+boolean dataflag = true;
 boolean settingsflag = false;
-boolean sendFiltered = false; // flags for data type to send
-boolean sendRaw2 = true; // flags for data tye to send
+boolean sendFiltered = true; // flags for data type to send
+boolean sendRaw2 = false; // flags for data tye to send
 
 
 // Control Register
@@ -61,7 +61,7 @@ unsigned int tmpREG[REGsize];
 unsigned int REGindex = 0;
 
 // Register variables
-int NChan = 8;
+int NChan = 1; // 8;
 int BitDepth = 10;
 int DownSampleCount = 0;
 int downsampleCounter = 0;
@@ -115,10 +115,12 @@ void setup(void){
 }
 
 void loop(){
+  // Serial.println("HI");
   if (dataflag){ // Arduino-controlled timing & measurement
     if (micros() > updatetime){  // check if it's time to send next sample
       updatetime = micros()+measurementdelay-TimingOffset;  // reset timer.
       ProcessOutput(); // handles data formats, filters, and channels
+      
     }
   }
   if(PlugTestFlag){
